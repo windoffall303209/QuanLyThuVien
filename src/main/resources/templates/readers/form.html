@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<!-- Thanh điều hướng dùng chung cho toàn hệ thống. -->
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<!-- Khối nội dung chính của màn hình này. -->
+<div class="container py-4">
+    <!-- Tiêu đề và thao tác chính của màn hình. -->
+    <div class="page-header">
+        <div>
+            <h1 class="h3 mb-1" th:text="${pageTitle}"></h1>
+            <p class="text-muted mb-0">Cập nhật thông tin hồ sơ độc giả.</p>
+        </div>
+        <a class="btn btn-outline-secondary" th:href="@{/readers}">Quay lại</a>
+    </div>
+    <div class="card shadow-sm border-0 form-card">
+        <div class="card-body p-4">
+            <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+            <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
+            <form method="post" th:action="${formAction}" th:object="${readerForm}">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="readerCode">Mã độc giả</label>
+                        <input class="form-control" id="readerCode" th:field="*{readerCode}">
+                        <div class="invalid-feedback d-block" th:errors="*{readerCode}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="fullName">Họ tên</label>
+                        <input class="form-control" id="fullName" th:field="*{fullName}">
+                        <div class="invalid-feedback d-block" th:errors="*{fullName}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="email">Email</label>
+                        <input class="form-control" id="email" th:field="*{email}">
+                        <div class="invalid-feedback d-block" th:errors="*{email}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="phone">Số điện thoại</label>
+                        <input class="form-control" id="phone" th:field="*{phone}">
+                        <div class="invalid-feedback d-block" th:errors="*{phone}"></div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="address">Địa chỉ</label>
+                        <textarea class="form-control" id="address" rows="3" th:field="*{address}"></textarea>
+                        <div class="invalid-feedback d-block" th:errors="*{address}"></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-4" type="submit">Lưu độc giả</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

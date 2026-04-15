@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+<!-- Thanh điều hướng dùng chung cho toàn hệ thống. -->
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<!-- Khối nội dung chính của màn hình này. -->
+<div class="container py-4">
+    <div th:replace="~{fragments/alerts :: flashMessages}"></div>
+    <!-- Tiêu đề và thao tác chính của màn hình. -->
+    <div class="page-header">
+        <div>
+            <h1 class="h3 mb-1">Tổng quan thư viện</h1>
+            <p class="text-muted mb-0">Theo dõi nhanh tình hình sách, độc giả và mượn trả.</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card h-100"><div class="card-body"><h2 class="h6 text-muted">Tổng đầu sách</h2><p class="display-6 mb-0" th:text="${stats.totalBooks}">0</p></div></div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card h-100"><div class="card-body"><h2 class="h6 text-muted">Sách còn sẵn</h2><p class="display-6 mb-0" th:text="${stats.totalAvailableCopies}">0</p></div></div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card h-100"><div class="card-body"><h2 class="h6 text-muted">Độc giả hoạt động</h2><p class="display-6 mb-0" th:text="${stats.totalReaders}">0</p></div></div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card stat-card h-100"><div class="card-body"><h2 class="h6 text-muted">Đang mượn / Quá hạn</h2><p class="display-6 mb-0"><span th:text="${stats.activeBorrows}">0</span> / <span class="text-danger" th:text="${stats.overdueBorrows}">0</span></p></div></div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card shadow-sm border-0">
+                <!-- Tiêu đề của nhóm dữ liệu đang được hiển thị. -->
+                <div class="card-header bg-white"><strong>Lượt mượn gần đây</strong></div>
+                <div class="table-responsive">
+                    <!-- Bảng hiển thị dữ liệu chính của màn hình. -->
+                    <table class="table table-hover mb-0">
+                        <thead><tr><th>Độc giả</th><th>Sách</th><th>Ngày mượn</th><th>Hạn trả</th><th>Trạng thái</th></tr></thead>
+                        <tbody>
+                        <tr th:each="borrow : ${recentBorrows}">
+                            <td th:text="${borrow.reader.fullName}"></td>
+                            <td th:text="${borrow.book.title}"></td>
+                            <td th:text="${borrow.borrowDate}"></td>
+                            <td th:text="${borrow.dueDate}"></td>
+                            <td><span class="badge text-bg-secondary" th:text="${borrow.status}"></span></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(recentBorrows)}"><td class="text-center text-muted" colspan="5">Chưa có dữ liệu.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0">
+                <!-- Tiêu đề của nhóm dữ liệu đang được hiển thị. -->
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <strong>Danh sách quá hạn</strong>
+                    <a class="btn btn-sm btn-outline-danger" th:href="@{/borrows/overdue}">Xem tất cả</a>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:each="borrow : ${overdueBorrows}">
+                        <div class="fw-semibold" th:text="${borrow.reader.fullName}"></div>
+                        <div th:text="${borrow.book.title}"></div>
+                        <small class="text-danger">Hạn trả: <span th:text="${borrow.dueDate}"></span></small>
+                    </li>
+                    <li class="list-group-item text-muted" th:if="${#lists.isEmpty(overdueBorrows)}">Không có lượt mượn quá hạn.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

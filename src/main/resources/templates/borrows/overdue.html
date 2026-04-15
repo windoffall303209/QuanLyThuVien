@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Danh sách quá hạn')}"></head>
+<body>
+<!-- Thanh điều hướng dùng chung cho toàn hệ thống. -->
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<!-- Khối nội dung chính của màn hình này. -->
+<div class="container py-4">
+    <!-- Tiêu đề và thao tác chính của màn hình. -->
+    <div class="page-header">
+        <div>
+            <h1 class="h3 mb-1">Danh sách mượn quá hạn</h1>
+            <p class="text-muted mb-0">Các lượt mượn cần được theo dõi và nhắc trả.</p>
+        </div>
+        <a class="btn btn-outline-secondary" th:href="@{/borrows}">Quay lại</a>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <!-- Bảng hiển thị dữ liệu chính của màn hình. -->
+            <table class="table table-hover mb-0">
+                <thead><tr><th>Độc giả</th><th>Sách</th><th>Ngày mượn</th><th>Hạn trả</th><th>Ghi chú</th></tr></thead>
+                <tbody>
+                <tr th:each="borrow : ${overdueBorrows}">
+                    <td th:text="${borrow.reader.fullName}"></td>
+                    <td th:text="${borrow.book.title}"></td>
+                    <td th:text="${borrow.borrowDate}"></td>
+                    <td class="text-danger fw-semibold" th:text="${borrow.dueDate}"></td>
+                    <td th:text="${borrow.notes}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(overdueBorrows)}"><td class="text-center text-muted" colspan="5">Hiện không có phiếu quá hạn.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

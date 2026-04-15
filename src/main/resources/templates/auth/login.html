@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Đăng nhập')}"></head>
+<body>
+<!-- Khối nội dung chính của màn hình này. -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h1 class="h3 text-center mb-4">Đăng nhập hệ thống</h1>
+                    <div class="alert alert-danger" th:if="${param.error}">Sai tài khoản hoặc mật khẩu.</div>
+                    <div class="alert alert-success" th:if="${param.logout}">Bạn đã đăng xuất thành công.</div>
+                    <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
+                    <form method="post" th:action="@{/login}">
+                        <div class="mb-3">
+                            <label class="form-label" for="username">Tên đăng nhập</label>
+                            <input class="form-control" id="username" name="username" type="text" autofocus>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="password">Mật khẩu</label>
+                            <input class="form-control" id="password" name="password" type="password">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" id="remember-me" name="remember-me" type="checkbox">
+                            <label class="form-check-label" for="remember-me">Ghi nhớ đăng nhập</label>
+                        </div>
+                        <button class="btn btn-primary w-100" type="submit">Đăng nhập</button>
+                    </form>
+                    <hr>
+                    <small class="text-muted d-block">Tài khoản demo:</small>
+                    <small class="text-muted d-block">admin / admin123</small>
+                    <small class="text-muted d-block">librarian / lib123</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

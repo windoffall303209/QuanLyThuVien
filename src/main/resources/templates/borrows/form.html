@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<!-- Thanh điều hướng dùng chung cho toàn hệ thống. -->
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<!-- Khối nội dung chính của màn hình này. -->
+<div class="container py-4">
+    <!-- Tiêu đề và thao tác chính của màn hình. -->
+    <div class="page-header">
+        <div>
+            <h1 class="h3 mb-1" th:text="${pageTitle}"></h1>
+            <p class="text-muted mb-0">Chọn độc giả, sách và hạn trả cho lượt mượn.</p>
+        </div>
+        <a class="btn btn-outline-secondary" th:href="@{/borrows}">Quay lại</a>
+    </div>
+    <div class="card shadow-sm border-0 form-card">
+        <div class="card-body p-4">
+            <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+            <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
+            <form method="post" th:action="@{/borrows/create}" th:object="${borrowForm}">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label" for="readerId">Độc giả</label>
+                        <select class="form-select" id="readerId" th:field="*{readerId}">
+                            <option value="">-- Chọn độc giả --</option>
+                            <option th:each="reader : ${readers}" th:value="${reader.id}" th:text="${reader.readerCode + ' - ' + reader.fullName}"></option>
+                        </select>
+                        <div class="invalid-feedback d-block" th:errors="*{readerId}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="categoryKeyword">Tìm thể loại</label>
+                        <input autocomplete="off" class="form-control" id="categoryKeyword" placeholder="Gõ tên thể loại để lọc" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="categoryId">Thể loại</label>
+                        <select class="form-select" id="categoryId" th:field="*{categoryId}">
+                            <option value="">-- Chọn thể loại --</option>
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
+                        <div class="invalid-feedback d-block" th:errors="*{categoryId}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="bookKeyword">Tìm sách</label>
+                        <input autocomplete="off" class="form-control" id="bookKeyword" placeholder="Gõ tên sách, tác giả hoặc ISBN" type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="bookId">Sách</label>
+                        <select class="form-select" id="bookId" th:field="*{bookId}">
+                            <option value="">-- Chọn sách --</option>
+                            <option th:each="book : ${books}"
+                                    th:attr="data-category-id=${book.category.id},data-search=${#strings.toLowerCase(book.title + ' ' + book.author + ' ' + book.isbn)}"
+                                    th:value="${book.id}"
+                                    th:text="${book.title + ' - ' + book.author + ' (Còn: ' + book.availableCopies + ')'}"></option>
+                        </select>
+                        <div class="invalid-feedback d-block" th:errors="*{bookId}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="borrowDate">Ngày mượn</label>
+                        <input class="form-control" id="borrowDate" th:field="*{borrowDate}" type="date">
+                        <div class="invalid-feedback d-block" th:errors="*{borrowDate}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="dueDate">Hạn trả</label>
+                        <input class="form-control" id="dueDate" th:field="*{dueDate}" type="date">
+                        <div class="invalid-feedback d-block" th:errors="*{dueDate}"></div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="notes">Ghi chú</label>
+                        <textarea class="form-control" id="notes" rows="3" th:field="*{notes}"></textarea>
+                        <div class="invalid-feedback d-block" th:errors="*{notes}"></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-4" type="submit">Lưu phiếu mượn</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    const categoryKeywordInput = document.getElementById('categoryKeyword');
+    const categorySelect = document.getElementById('categoryId');
+    const bookKeywordInput = document.getElementById('bookKeyword');
+    const bookSelect = document.getElementById('bookId');
+    const categoryOptions = Array.from(categorySelect.options).slice(1);
+    const bookOptions = Array.from(bookSelect.options).slice(1);
+
+    function normalizeKeyword(value) {
+        return value.trim().toLowerCase();
+    }
+
+    function filterCategoryOptions() {
+        const keyword = normalizeKeyword(categoryKeywordInput.value);
+        categoryOptions.forEach((option) => {
+            const visible = !keyword || option.text.toLowerCase().includes(keyword);
+            option.hidden = !visible;
+        });
+        if (categorySelect.selectedOptions[0]?.hidden) {
+            categorySelect.value = '';
+        }
+    }
+
+    function filterBookOptions() {
+        const categoryId = categorySelect.value;
+        const keyword = normalizeKeyword(bookKeywordInput.value);
+        bookOptions.forEach((option) => {
+            const matchesCategory = categoryId && option.dataset.categoryId === categoryId;
+            const matchesKeyword = !keyword || option.dataset.search.includes(keyword);
+            option.hidden = !(matchesCategory && matchesKeyword);
+        });
+        if (!categoryId || bookSelect.selectedOptions[0]?.hidden) {
+            bookSelect.value = '';
+        }
+        bookSelect.disabled = !categoryId;
+    }
+
+    categoryKeywordInput.addEventListener('input', filterCategoryOptions);
+    categorySelect.addEventListener('change', filterBookOptions);
+    bookKeywordInput.addEventListener('input', filterBookOptions);
+
+    filterCategoryOptions();
+    filterBookOptions();
+</script>
+</body>
+</html>

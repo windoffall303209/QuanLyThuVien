@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Lỗi hệ thống')}"></head>
+<body>
+<!-- Thanh điều hướng dùng chung cho toàn hệ thống. -->
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<!-- Khối nội dung chính của màn hình này. -->
+<div class="container py-5">
+    <div class="card shadow-sm border-0 mx-auto" style="max-width: 720px;">
+        <div class="card-body p-4 text-center">
+            <h1 class="h3 mb-3" th:text="${errorTitle}">Đã xảy ra lỗi</h1>
+            <p class="text-muted mb-4" th:text="${errorMessage}">Có lỗi xảy ra trong quá trình xử lý.</p>
+            <a class="btn btn-primary" th:href="@{/dashboard}">Quay về dashboard</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

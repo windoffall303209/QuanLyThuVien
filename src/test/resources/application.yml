@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:qltv;MODE=MSSQLServer;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  thymeleaf:
+    cache: false
+
+app:
+  default-borrow-days: 14

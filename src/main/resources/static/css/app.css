@@ -1,0 +1,24 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+.table thead th {
+    white-space: nowrap;
+}
+
+.form-card {
+    max-width: 720px;
+}

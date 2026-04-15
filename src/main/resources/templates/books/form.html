@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${pageTitle})}"></head>
+<body>
+<!-- Thanh điều hướng dùng chung cho toàn hệ thống. -->
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<!-- Khối nội dung chính của màn hình này. -->
+<div class="container py-4">
+    <!-- Tiêu đề và thao tác chính của màn hình. -->
+    <div class="page-header">
+        <div>
+            <h1 class="h3 mb-1" th:text="${pageTitle}"></h1>
+            <p class="text-muted mb-0">Nhập thông tin chi tiết của sách.</p>
+        </div>
+        <a class="btn btn-outline-secondary" th:href="@{/books}">Quay lại</a>
+    </div>
+    <div class="card shadow-sm border-0 form-card">
+        <div class="card-body p-4">
+            <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+            <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
+            <form method="post" th:action="${formAction}" th:object="${bookForm}">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="isbn">ISBN</label>
+                        <input class="form-control" id="isbn" th:field="*{isbn}">
+                        <div class="invalid-feedback d-block" th:errors="*{isbn}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="title">Tên sách</label>
+                        <input class="form-control" id="title" th:field="*{title}">
+                        <div class="invalid-feedback d-block" th:errors="*{title}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="author">Tác giả</label>
+                        <input class="form-control" id="author" th:field="*{author}">
+                        <div class="invalid-feedback d-block" th:errors="*{author}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="publisher">Nhà xuất bản</label>
+                        <input class="form-control" id="publisher" th:field="*{publisher}">
+                        <div class="invalid-feedback d-block" th:errors="*{publisher}"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="publishedYear">Năm xuất bản</label>
+                        <input class="form-control" id="publishedYear" th:field="*{publishedYear}" type="number">
+                        <div class="invalid-feedback d-block" th:errors="*{publishedYear}"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="totalCopies">Tổng số lượng</label>
+                        <input class="form-control" id="totalCopies" th:field="*{totalCopies}" type="number">
+                        <div class="invalid-feedback d-block" th:errors="*{totalCopies}"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="availableCopies">Số lượng còn</label>
+                        <input class="form-control" id="availableCopies" th:field="*{availableCopies}" type="number">
+                        <div class="invalid-feedback d-block" th:errors="*{availableCopies}"></div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="categoryId">Thể loại</label>
+                        <select class="form-select" id="categoryId" th:field="*{categoryId}">
+                            <option value="">-- Chọn thể loại --</option>
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        </select>
+                        <div class="invalid-feedback d-block" th:errors="*{categoryId}"></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-4" type="submit">Lưu sách</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

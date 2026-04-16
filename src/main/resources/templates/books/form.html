@@ -10,58 +10,50 @@
     <div class="page-header">
         <div>
             <h1 class="h3 mb-1" th:text="${pageTitle}"></h1>
-            <p class="text-muted mb-0">Nhập thông tin chi tiết của sách.</p>
+            <p class="text-muted mb-0">Nhập thông tin bảng Sach.</p>
         </div>
-        <a class="btn btn-outline-secondary" th:href="@{/books}">Quay lại</a>
+        <a class="btn btn-outline-secondary" th:href="@{/sach}">Quay lại</a>
     </div>
     <div class="card shadow-sm border-0 form-card">
         <div class="card-body p-4">
             <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
             <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
-            <form method="post" th:action="${formAction}" th:object="${bookForm}">
+            <form method="post" th:action="${formAction}" th:object="${sachForm}">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label" for="isbn">ISBN</label>
-                        <input class="form-control" id="isbn" th:field="*{isbn}">
-                        <div class="invalid-feedback d-block" th:errors="*{isbn}"></div>
+                        <label class="form-label" for="maSach">Mã sách</label>
+                        <input class="form-control" id="maSach" th:field="*{maSach}" th:readonly="${disableMaSach}">
+                        <div class="invalid-feedback d-block" th:errors="*{maSach}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="title">Tên sách</label>
-                        <input class="form-control" id="title" th:field="*{title}">
-                        <div class="invalid-feedback d-block" th:errors="*{title}"></div>
+                        <label class="form-label" for="tenSach">Tên sách</label>
+                        <input class="form-control" id="tenSach" th:field="*{tenSach}">
+                        <div class="invalid-feedback d-block" th:errors="*{tenSach}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="author">Tác giả</label>
-                        <input class="form-control" id="author" th:field="*{author}">
-                        <div class="invalid-feedback d-block" th:errors="*{author}"></div>
+                        <label class="form-label" for="tacGia">Tác giả</label>
+                        <input class="form-control" id="tacGia" th:field="*{tacGia}">
+                        <div class="invalid-feedback d-block" th:errors="*{tacGia}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="publisher">Nhà xuất bản</label>
-                        <input class="form-control" id="publisher" th:field="*{publisher}">
-                        <div class="invalid-feedback d-block" th:errors="*{publisher}"></div>
+                        <label class="form-label" for="nhaXb">Nhà xuất bản</label>
+                        <input class="form-control" id="nhaXb" th:field="*{nhaXb}">
+                        <div class="invalid-feedback d-block" th:errors="*{nhaXb}"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label" for="publishedYear">Năm xuất bản</label>
-                        <input class="form-control" id="publishedYear" th:field="*{publishedYear}" type="number">
-                        <div class="invalid-feedback d-block" th:errors="*{publishedYear}"></div>
+                        <label class="form-label" for="namXb">Năm xuất bản</label>
+                        <input class="form-control" id="namXb" th:field="*{namXb}" type="number">
+                        <div class="invalid-feedback d-block" th:errors="*{namXb}"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label" for="totalCopies">Tổng số lượng</label>
-                        <input class="form-control" id="totalCopies" th:field="*{totalCopies}" type="number">
-                        <div class="invalid-feedback d-block" th:errors="*{totalCopies}"></div>
+                        <label class="form-label" for="soTrang">Số trang</label>
+                        <input class="form-control" id="soTrang" th:field="*{soTrang}" type="number">
+                        <div class="invalid-feedback d-block" th:errors="*{soTrang}"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label" for="availableCopies">Số lượng còn</label>
-                        <input class="form-control" id="availableCopies" th:field="*{availableCopies}" type="number">
-                        <div class="invalid-feedback d-block" th:errors="*{availableCopies}"></div>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label" for="categoryId">Thể loại</label>
-                        <select class="form-select" id="categoryId" th:field="*{categoryId}">
-                            <option value="">-- Chọn thể loại --</option>
-                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-                        </select>
-                        <div class="invalid-feedback d-block" th:errors="*{categoryId}"></div>
+                        <label class="form-label" for="giaTri">Giá trị</label>
+                        <input class="form-control" id="giaTri" th:field="*{giaTri}" type="number" step="0.01">
+                        <div class="invalid-feedback d-block" th:errors="*{giaTri}"></div>
                     </div>
                 </div>
                 <button class="btn btn-primary mt-4" type="submit">Lưu sách</button>

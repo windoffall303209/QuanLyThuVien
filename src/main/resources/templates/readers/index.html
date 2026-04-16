@@ -10,15 +10,15 @@
     <!-- Tiêu đề và thao tác chính của màn hình. -->
     <div class="page-header">
         <div>
-            <h1 class="h3 mb-1">Quản lý độc giả</h1>
-            <p class="text-muted mb-0">Theo dõi hồ sơ độc giả của thư viện.</p>
+            <h1 class="h3 mb-1">Quản lý thành viên</h1>
+            <p class="text-muted mb-0">Theo dõi hồ sơ bảng ThanhVien.</p>
         </div>
-        <a class="btn btn-primary" th:href="@{/readers/create}">Thêm độc giả</a>
+        <a class="btn btn-primary" th:href="@{/thanh-vien/create}">Thêm thành viên</a>
     </div>
     <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
-    <form class="row g-2 mb-3" method="get" th:action="@{/readers}">
+    <form class="row g-2 mb-3" method="get" th:action="@{/thanh-vien}">
         <div class="col-md-6">
-            <input class="form-control" name="keyword" placeholder="Tìm theo mã hoặc tên độc giả" th:value="${keyword}">
+            <input class="form-control" name="keyword" placeholder="Tìm theo mã hoặc tên thành viên" th:value="${keyword}">
         </div>
         <div class="col-auto">
             <button class="btn btn-outline-primary" type="submit">Tìm kiếm</button>
@@ -28,27 +28,24 @@
         <div class="table-responsive">
             <!-- Bảng hiển thị dữ liệu chính của màn hình. -->
             <table class="table table-hover mb-0">
-                <thead><tr><th>Mã độc giả</th><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th>Địa chỉ</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+                <thead><tr><th>Mã thành viên</th><th>Họ tên</th><th>SĐT</th><th>Địa chỉ</th><th>Ngày đăng ký</th><th>Tình trạng thẻ</th><th class="text-end">Thao tác</th></tr></thead>
                 <tbody>
-                <tr th:each="reader : ${readers}">
-                    <td><a class="link-primary text-decoration-none" th:href="@{|/readers/${reader.id}|}" th:text="${reader.readerCode}"></a></td>
-                    <td><a class="link-dark text-decoration-none" th:href="@{|/readers/${reader.id}|}" th:text="${reader.fullName}"></a></td>
-                    <td th:text="${reader.email}"></td>
-                    <td th:text="${reader.phone}"></td>
-                    <td th:text="${reader.address}"></td>
-                    <td>
-                        <span class="badge text-bg-success" th:if="${reader.active}">Hoạt động</span>
-                        <span class="badge text-bg-secondary" th:unless="${reader.active}">Ngừng hoạt động</span>
-                    </td>
+                <tr th:each="member : ${members}">
+                    <td><a class="link-primary text-decoration-none" th:href="@{|/thanh-vien/${member.maThanhVien}|}" th:text="${member.maThanhVien}"></a></td>
+                    <td><a class="link-dark text-decoration-none" th:href="@{|/thanh-vien/${member.maThanhVien}|}" th:text="${member.hoTen}"></a></td>
+                    <td th:text="${member.sdt}"></td>
+                    <td th:text="${member.diaChi}"></td>
+                    <td th:text="${member.ngayDangKy}"></td>
+                    <td th:text="${member.tinhTrangThe}"></td>
                     <td class="text-end">
-                        <a class="btn btn-sm btn-outline-primary" th:href="@{|/readers/${reader.id}/edit|}">Sửa</a>
+                        <a class="btn btn-sm btn-outline-primary" th:href="@{|/thanh-vien/${member.maThanhVien}/edit|}">Sửa</a>
                         <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
-                        <form class="d-inline" method="post" th:action="@{|/readers/${reader.id}/delete|}">
-                            <button class="btn btn-sm btn-outline-danger" th:disabled="${!reader.active}" type="submit">Ngừng hoạt động</button>
+                        <form class="d-inline" method="post" th:action="@{|/thanh-vien/${member.maThanhVien}/delete|}">
+                            <button class="btn btn-sm btn-outline-danger" type="submit">Xóa</button>
                         </form>
                     </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(readers)}"><td class="text-center text-muted" colspan="7">Không có độc giả phù hợp.</td></tr>
+                <tr th:if="${#lists.isEmpty(members)}"><td class="text-center text-muted" colspan="7">Không có thành viên phù hợp.</td></tr>
                 </tbody>
             </table>
         </div>

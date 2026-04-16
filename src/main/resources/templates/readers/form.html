@@ -10,43 +10,53 @@
     <div class="page-header">
         <div>
             <h1 class="h3 mb-1" th:text="${pageTitle}"></h1>
-            <p class="text-muted mb-0">Cập nhật thông tin hồ sơ độc giả.</p>
+            <p class="text-muted mb-0">Cập nhật thông tin bảng ThanhVien.</p>
         </div>
-        <a class="btn btn-outline-secondary" th:href="@{/readers}">Quay lại</a>
+        <a class="btn btn-outline-secondary" th:href="@{/thanh-vien}">Quay lại</a>
     </div>
     <div class="card shadow-sm border-0 form-card">
         <div class="card-body p-4">
             <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
             <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
-            <form method="post" th:action="${formAction}" th:object="${readerForm}">
+            <form method="post" th:action="${formAction}" th:object="${memberForm}">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label" for="readerCode">Mã độc giả</label>
-                        <input class="form-control" id="readerCode" th:field="*{readerCode}">
-                        <div class="invalid-feedback d-block" th:errors="*{readerCode}"></div>
+                        <label class="form-label" for="maThanhVien">Mã thành viên</label>
+                        <input class="form-control" id="maThanhVien" th:field="*{maThanhVien}" th:readonly="${disableMaThanhVien}">
+                        <div class="invalid-feedback d-block" th:errors="*{maThanhVien}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="fullName">Họ tên</label>
-                        <input class="form-control" id="fullName" th:field="*{fullName}">
-                        <div class="invalid-feedback d-block" th:errors="*{fullName}"></div>
+                        <label class="form-label" for="hoTen">Họ tên</label>
+                        <input class="form-control" id="hoTen" th:field="*{hoTen}">
+                        <div class="invalid-feedback d-block" th:errors="*{hoTen}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="email">Email</label>
-                        <input class="form-control" id="email" th:field="*{email}">
-                        <div class="invalid-feedback d-block" th:errors="*{email}"></div>
+                        <label class="form-label" for="sdt">Số điện thoại</label>
+                        <input class="form-control" id="sdt" th:field="*{sdt}">
+                        <div class="invalid-feedback d-block" th:errors="*{sdt}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="phone">Số điện thoại</label>
-                        <input class="form-control" id="phone" th:field="*{phone}">
-                        <div class="invalid-feedback d-block" th:errors="*{phone}"></div>
+                        <label class="form-label" for="diaChi">Địa chỉ</label>
+                        <input class="form-control" id="diaChi" th:field="*{diaChi}">
+                        <div class="invalid-feedback d-block" th:errors="*{diaChi}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="ngayDangKy">Ngày đăng ký</label>
+                        <input class="form-control" id="ngayDangKy" th:field="*{ngayDangKy}" type="date">
+                        <div class="invalid-feedback d-block" th:errors="*{ngayDangKy}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="tinhTrangThe">Tình trạng thẻ</label>
+                        <input class="form-control" id="tinhTrangThe" th:field="*{tinhTrangThe}">
+                        <div class="invalid-feedback d-block" th:errors="*{tinhTrangThe}"></div>
                     </div>
                     <div class="col-12">
-                        <label class="form-label" for="address">Địa chỉ</label>
-                        <textarea class="form-control" id="address" rows="3" th:field="*{address}"></textarea>
-                        <div class="invalid-feedback d-block" th:errors="*{address}"></div>
+                        <label class="form-label" for="ghiChu">Ghi chú</label>
+                        <textarea class="form-control" id="ghiChu" rows="3" th:field="*{ghiChu}"></textarea>
+                        <div class="invalid-feedback d-block" th:errors="*{ghiChu}"></div>
                     </div>
                 </div>
-                <button class="btn btn-primary mt-4" type="submit">Lưu độc giả</button>
+                <button class="btn btn-primary mt-4" type="submit">Lưu thành viên</button>
             </form>
         </div>
     </div>

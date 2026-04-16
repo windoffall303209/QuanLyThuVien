@@ -10,24 +10,25 @@
     <div class="page-header">
         <div>
             <h1 class="h3 mb-1">Danh sách mượn quá hạn</h1>
-            <p class="text-muted mb-0">Các lượt mượn cần được theo dõi và nhắc trả.</p>
+            <p class="text-muted mb-0">Các lượt mượn trong bảng Muon đang quá hạn.</p>
         </div>
-        <a class="btn btn-outline-secondary" th:href="@{/borrows}">Quay lại</a>
+        <a class="btn btn-outline-secondary" th:href="@{/muon-tra}">Quay lại</a>
     </div>
     <div class="card shadow-sm border-0">
         <div class="table-responsive">
             <!-- Bảng hiển thị dữ liệu chính của màn hình. -->
             <table class="table table-hover mb-0">
-                <thead><tr><th>Độc giả</th><th>Sách</th><th>Ngày mượn</th><th>Hạn trả</th><th>Ghi chú</th></tr></thead>
+                <thead><tr><th>Thành viên</th><th>Sách</th><th>Bản sao</th><th>Ngày mượn</th><th>Hạn trả</th><th>Ghi chú</th></tr></thead>
                 <tbody>
-                <tr th:each="borrow : ${overdueBorrows}">
-                    <td th:text="${borrow.reader.fullName}"></td>
-                    <td th:text="${borrow.book.title}"></td>
-                    <td th:text="${borrow.borrowDate}"></td>
-                    <td class="text-danger fw-semibold" th:text="${borrow.dueDate}"></td>
-                    <td th:text="${borrow.notes}"></td>
+                <tr th:each="borrow : ${overdues}">
+                    <td th:text="${borrow.maThanhVien}"></td>
+                    <td th:text="${borrow.maSach}"></td>
+                    <td th:text="${borrow.copyNo}"></td>
+                    <td th:text="${borrow.ngayMuon}"></td>
+                    <td class="text-danger fw-semibold" th:text="${borrow.ngayHenTra}"></td>
+                    <td th:text="${borrow.ghiChu}"></td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(overdueBorrows)}"><td class="text-center text-muted" colspan="5">Hiện không có phiếu quá hạn.</td></tr>
+                <tr th:if="${#lists.isEmpty(overdues)}"><td class="text-center text-muted" colspan="6">Hiện không có phiếu quá hạn.</td></tr>
                 </tbody>
             </table>
         </div>

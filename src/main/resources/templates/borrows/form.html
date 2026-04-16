@@ -10,65 +10,62 @@
     <div class="page-header">
         <div>
             <h1 class="h3 mb-1" th:text="${pageTitle}"></h1>
-            <p class="text-muted mb-0">Chọn độc giả, sách và hạn trả cho lượt mượn.</p>
+            <p class="text-muted mb-0">Chọn thành viên, thủ thư, sách và bản sao để tạo phiếu mượn.</p>
         </div>
-        <a class="btn btn-outline-secondary" th:href="@{/borrows}">Quay lại</a>
+        <a class="btn btn-outline-secondary" th:href="@{/muon-tra}">Quay lại</a>
     </div>
     <div class="card shadow-sm border-0 form-card">
         <div class="card-body p-4">
             <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
             <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
-            <form method="post" th:action="@{/borrows/create}" th:object="${borrowForm}">
+            <form method="post" th:action="@{/muon-tra/create}" th:object="${muonForm}">
                 <div class="row g-3">
-                    <div class="col-12">
-                        <label class="form-label" for="readerId">Độc giả</label>
-                        <select class="form-select" id="readerId" th:field="*{readerId}">
-                            <option value="">-- Chọn độc giả --</option>
-                            <option th:each="reader : ${readers}" th:value="${reader.id}" th:text="${reader.readerCode + ' - ' + reader.fullName}"></option>
+                    <div class="col-md-6">
+                        <label class="form-label" for="maThanhVien">Thành viên</label>
+                        <select class="form-select" id="maThanhVien" th:field="*{maThanhVien}">
+                            <option value="">-- Chọn thành viên --</option>
+                            <option th:each="member : ${members}" th:value="${member.maThanhVien}" th:text="${member.maThanhVien + ' - ' + member.hoTen}"></option>
                         </select>
-                        <div class="invalid-feedback d-block" th:errors="*{readerId}"></div>
+                        <div class="invalid-feedback d-block" th:errors="*{maThanhVien}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="categoryKeyword">Tìm thể loại</label>
-                        <input autocomplete="off" class="form-control" id="categoryKeyword" placeholder="Gõ tên thể loại để lọc" type="text">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label" for="categoryId">Thể loại</label>
-                        <select class="form-select" id="categoryId" th:field="*{categoryId}">
-                            <option value="">-- Chọn thể loại --</option>
-                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                        <label class="form-label" for="maThuThu">Thủ thư</label>
+                        <select class="form-select" id="maThuThu" th:field="*{maThuThu}">
+                            <option value="">-- Chọn thủ thư --</option>
+                            <option th:each="librarian : ${librarians}" th:value="${librarian.maThuThu}" th:text="${librarian.maThuThu + ' - ' + librarian.hoTen}"></option>
                         </select>
-                        <div class="invalid-feedback d-block" th:errors="*{categoryId}"></div>
+                        <div class="invalid-feedback d-block" th:errors="*{maThuThu}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="bookKeyword">Tìm sách</label>
-                        <input autocomplete="off" class="form-control" id="bookKeyword" placeholder="Gõ tên sách, tác giả hoặc ISBN" type="text">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label" for="bookId">Sách</label>
-                        <select class="form-select" id="bookId" th:field="*{bookId}">
+                        <label class="form-label" for="maSach">Sách</label>
+                        <select class="form-select" id="maSach" th:field="*{maSach}">
                             <option value="">-- Chọn sách --</option>
-                            <option th:each="book : ${books}"
-                                    th:attr="data-category-id=${book.category.id},data-search=${#strings.toLowerCase(book.title + ' ' + book.author + ' ' + book.isbn)}"
-                                    th:value="${book.id}"
-                                    th:text="${book.title + ' - ' + book.author + ' (Còn: ' + book.availableCopies + ')'}"></option>
+                            <option th:each="sach : ${saches}" th:value="${sach.maSach}" th:text="${sach.maSach + ' - ' + sach.tenSach}"></option>
                         </select>
-                        <div class="invalid-feedback d-block" th:errors="*{bookId}"></div>
+                        <div class="invalid-feedback d-block" th:errors="*{maSach}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="borrowDate">Ngày mượn</label>
-                        <input class="form-control" id="borrowDate" th:field="*{borrowDate}" type="date">
-                        <div class="invalid-feedback d-block" th:errors="*{borrowDate}"></div>
+                        <label class="form-label" for="copyNo">Bản sao</label>
+                        <select class="form-select" id="copyNo" th:field="*{copyNo}">
+                            <option value="">-- Chọn bản sao --</option>
+                            <option th:each="copy : ${availableCopies}" th:value="${copy.copyNo}" th:text="${copy.maSach + ' - Copy ' + copy.copyNo}"></option>
+                        </select>
+                        <div class="invalid-feedback d-block" th:errors="*{copyNo}"></div>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="dueDate">Hạn trả</label>
-                        <input class="form-control" id="dueDate" th:field="*{dueDate}" type="date">
-                        <div class="invalid-feedback d-block" th:errors="*{dueDate}"></div>
+                        <label class="form-label" for="ngayMuon">Ngày mượn</label>
+                        <input class="form-control" id="ngayMuon" th:field="*{ngayMuon}" type="date">
+                        <div class="invalid-feedback d-block" th:errors="*{ngayMuon}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="ngayHenTra">Ngày hẹn trả</label>
+                        <input class="form-control" id="ngayHenTra" th:field="*{ngayHenTra}" type="date">
+                        <div class="invalid-feedback d-block" th:errors="*{ngayHenTra}"></div>
                     </div>
                     <div class="col-12">
-                        <label class="form-label" for="notes">Ghi chú</label>
-                        <textarea class="form-control" id="notes" rows="3" th:field="*{notes}"></textarea>
-                        <div class="invalid-feedback d-block" th:errors="*{notes}"></div>
+                        <label class="form-label" for="ghiChu">Ghi chú</label>
+                        <textarea class="form-control" id="ghiChu" rows="3" th:field="*{ghiChu}"></textarea>
+                        <div class="invalid-feedback d-block" th:errors="*{ghiChu}"></div>
                     </div>
                 </div>
                 <button class="btn btn-primary mt-4" type="submit">Lưu phiếu mượn</button>
@@ -76,49 +73,5 @@
         </div>
     </div>
 </div>
-<script>
-    const categoryKeywordInput = document.getElementById('categoryKeyword');
-    const categorySelect = document.getElementById('categoryId');
-    const bookKeywordInput = document.getElementById('bookKeyword');
-    const bookSelect = document.getElementById('bookId');
-    const categoryOptions = Array.from(categorySelect.options).slice(1);
-    const bookOptions = Array.from(bookSelect.options).slice(1);
-
-    function normalizeKeyword(value) {
-        return value.trim().toLowerCase();
-    }
-
-    function filterCategoryOptions() {
-        const keyword = normalizeKeyword(categoryKeywordInput.value);
-        categoryOptions.forEach((option) => {
-            const visible = !keyword || option.text.toLowerCase().includes(keyword);
-            option.hidden = !visible;
-        });
-        if (categorySelect.selectedOptions[0]?.hidden) {
-            categorySelect.value = '';
-        }
-    }
-
-    function filterBookOptions() {
-        const categoryId = categorySelect.value;
-        const keyword = normalizeKeyword(bookKeywordInput.value);
-        bookOptions.forEach((option) => {
-            const matchesCategory = categoryId && option.dataset.categoryId === categoryId;
-            const matchesKeyword = !keyword || option.dataset.search.includes(keyword);
-            option.hidden = !(matchesCategory && matchesKeyword);
-        });
-        if (!categoryId || bookSelect.selectedOptions[0]?.hidden) {
-            bookSelect.value = '';
-        }
-        bookSelect.disabled = !categoryId;
-    }
-
-    categoryKeywordInput.addEventListener('input', filterCategoryOptions);
-    categorySelect.addEventListener('change', filterBookOptions);
-    bookKeywordInput.addEventListener('input', filterBookOptions);
-
-    filterCategoryOptions();
-    filterBookOptions();
-</script>
 </body>
 </html>

@@ -11,14 +11,14 @@
     <div class="page-header">
         <div>
             <h1 class="h3 mb-1">Quản lý sách</h1>
-            <p class="text-muted mb-0">Theo dõi danh mục sách và tồn kho hiện có.</p>
+            <p class="text-muted mb-0">Theo dõi dữ liệu bảng Sach.</p>
         </div>
-        <a class="btn btn-primary" th:href="@{/books/create}">Thêm sách</a>
+        <a class="btn btn-primary" th:href="@{/sach/create}">Thêm sách</a>
     </div>
     <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
-    <form class="row g-2 mb-3" method="get" th:action="@{/books}">
+    <form class="row g-2 mb-3" method="get" th:action="@{/sach}">
         <div class="col-md-6">
-            <input class="form-control" name="keyword" placeholder="Tìm theo tên sách, tác giả hoặc ISBN" th:value="${keyword}">
+            <input class="form-control" name="keyword" placeholder="Tìm theo mã sách, tên sách hoặc tác giả" th:value="${keyword}">
         </div>
         <div class="col-auto">
             <button class="btn btn-outline-primary" type="submit">Tìm kiếm</button>
@@ -28,28 +28,25 @@
         <div class="table-responsive">
             <!-- Bảng hiển thị dữ liệu chính của màn hình. -->
             <table class="table table-hover mb-0">
-                <thead><tr><th>ISBN</th><th>Tên sách</th><th>Tác giả</th><th>Thể loại</th><th>Tổng</th><th>Còn</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+                <thead><tr><th>Mã sách</th><th>Tên sách</th><th>Tác giả</th><th>NXB</th><th>Năm XB</th><th>Số trang</th><th>Giá trị</th><th class="text-end">Thao tác</th></tr></thead>
                 <tbody>
-                <tr th:each="book : ${books}">
-                    <td th:text="${book.isbn}"></td>
-                    <td th:text="${book.title}"></td>
-                    <td th:text="${book.author}"></td>
-                    <td th:text="${book.category.name}"></td>
-                    <td th:text="${book.totalCopies}"></td>
-                    <td th:text="${book.availableCopies}"></td>
-                    <td>
-                        <span class="badge text-bg-success" th:if="${book.active}">Đang dùng</span>
-                        <span class="badge text-bg-secondary" th:unless="${book.active}">Ngừng dùng</span>
-                    </td>
+                <tr th:each="sach : ${saches}">
+                    <td th:text="${sach.maSach}"></td>
+                    <td th:text="${sach.tenSach}"></td>
+                    <td th:text="${sach.tacGia}"></td>
+                    <td th:text="${sach.nhaXb}"></td>
+                    <td th:text="${sach.namXb}"></td>
+                    <td th:text="${sach.soTrang}"></td>
+                    <td th:text="${sach.giaTri}"></td>
                     <td class="text-end">
-                        <a class="btn btn-sm btn-outline-primary" th:href="@{|/books/${book.id}/edit|}">Sửa</a>
+                        <a class="btn btn-sm btn-outline-primary" th:href="@{|/sach/${sach.maSach}/edit|}">Sửa</a>
                         <!-- Biểu mẫu nhập liệu hoặc lọc dữ liệu. -->
-                        <form class="d-inline" method="post" th:action="@{|/books/${book.id}/delete|}">
-                            <button class="btn btn-sm btn-outline-danger" th:disabled="${!book.active}" type="submit">Ngừng dùng</button>
+                        <form class="d-inline" method="post" th:action="@{|/sach/${sach.maSach}/delete|}">
+                            <button class="btn btn-sm btn-outline-danger" type="submit">Xóa</button>
                         </form>
                     </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(books)}"><td class="text-center text-muted" colspan="8">Không có sách phù hợp.</td></tr>
+                <tr th:if="${#lists.isEmpty(saches)}"><td class="text-center text-muted" colspan="8">Không có sách phù hợp.</td></tr>
                 </tbody>
             </table>
         </div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Thủ thư')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="container py-4">
+    <div class="page-header">
+        <div>
+            <h1 class="h3 mb-1">Thủ thư</h1>
+            <p class="text-muted mb-0">Dữ liệu bảng ThuThu.</p>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead><tr><th>Mã</th><th>Họ tên</th><th>SĐT</th><th>Email</th><th>Chi nhánh</th></tr></thead>
+                <tbody>
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.maThuThu}"></td>
+                    <td th:text="${item.hoTen}"></td>
+                    <td th:text="${item.sdt}"></td>
+                    <td th:text="${item.email}"></td>
+                    <td th:text="${item.maChiNhanh}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(items)}"><td class="text-center text-muted" colspan="5">Chưa có dữ liệu.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

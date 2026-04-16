@@ -9,63 +9,41 @@
     <!-- Tiêu đề và thao tác chính của màn hình. -->
     <div class="page-header">
         <div>
-            <h1 class="h3 mb-1" th:text="${reader.fullName}"></h1>
-            <p class="text-muted mb-0" th:text="${reader.readerCode + ' - Theo dõi lịch sử mượn trả của độc giả này.'}"></p>
+            <h1 class="h3 mb-1" th:text="${member.hoTen}"></h1>
+            <p class="text-muted mb-0" th:text="${member.maThanhVien + ' - Theo dõi lịch sử mượn trả của thành viên này.'}"></p>
         </div>
-        <a class="btn btn-outline-secondary" th:href="@{/readers}">Quay lại</a>
+        <a class="btn btn-outline-secondary" th:href="@{/thanh-vien}">Quay lại</a>
     </div>
 
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
             <div class="row g-3">
-                <div class="col-md-4"><strong>Email:</strong> <span th:text="${reader.email ?: 'Chưa cập nhật'}"></span></div>
-                <div class="col-md-4"><strong>Số điện thoại:</strong> <span th:text="${reader.phone ?: 'Chưa cập nhật'}"></span></div>
-                <div class="col-md-4"><strong>Địa chỉ:</strong> <span th:text="${reader.address ?: 'Chưa cập nhật'}"></span></div>
+                <div class="col-md-3"><strong>Số điện thoại:</strong> <span th:text="${member.sdt ?: 'Chưa cập nhật'}"></span></div>
+                <div class="col-md-3"><strong>Địa chỉ:</strong> <span th:text="${member.diaChi ?: 'Chưa cập nhật'}"></span></div>
+                <div class="col-md-3"><strong>Ngày đăng ký:</strong> <span th:text="${member.ngayDangKy}"></span></div>
+                <div class="col-md-3"><strong>Tình trạng thẻ:</strong> <span th:text="${member.tinhTrangThe}"></span></div>
             </div>
         </div>
     </div>
 
     <div class="card shadow-sm border-0 mb-4">
         <!-- Tiêu đề của nhóm dữ liệu đang được hiển thị. -->
-        <div class="card-header bg-white"><strong>Sách đang mượn</strong></div>
+        <div class="card-header bg-white"><strong>Lịch sử mượn của thành viên</strong></div>
         <div class="table-responsive">
             <!-- Bảng hiển thị dữ liệu chính của màn hình. -->
             <table class="table table-hover mb-0">
-                <thead><tr><th>Sách</th><th>Thể loại</th><th>Ngày mượn</th><th>Hạn trả</th><th>Trạng thái</th><th>Ghi chú</th></tr></thead>
+                <thead><tr><th>Mã sách</th><th>Bản sao</th><th>Ngày mượn</th><th>Ngày hẹn trả</th><th>Ngày trả</th><th>Trạng thái</th><th>Ghi chú</th></tr></thead>
                 <tbody>
-                <tr th:each="borrow : ${activeBorrows}">
-                    <td th:text="${borrow.book.title}"></td>
-                    <td th:text="${borrow.book.category.name}"></td>
-                    <td th:text="${borrow.borrowDate}"></td>
-                    <td th:text="${borrow.dueDate}"></td>
-                    <td>
-                        <span class="badge text-bg-warning" th:if="${borrow.status.name() == 'BORROWED'}">Đang mượn</span>
-                        <span class="badge text-bg-danger" th:if="${borrow.status.name() == 'OVERDUE'}">Quá hạn</span>
-                    </td>
-                    <td th:text="${borrow.notes}"></td>
+                <tr th:each="history : ${borrowHistories}">
+                    <td th:text="${history.maSach}"></td>
+                    <td th:text="${history.copyNo}"></td>
+                    <td th:text="${history.ngayMuon}"></td>
+                    <td th:text="${history.ngayHenTra}"></td>
+                    <td th:text="${history.ngayTra}"></td>
+                    <td th:text="${history.trangThai}"></td>
+                    <td th:text="${history.ghiChu}"></td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(activeBorrows)}"><td class="text-center text-muted" colspan="6">Độc giả hiện không mượn sách nào.</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="card shadow-sm border-0">
-        <!-- Tiêu đề của nhóm dữ liệu đang được hiển thị. -->
-        <div class="card-header bg-white"><strong>Sách đã trả</strong></div>
-        <div class="table-responsive">
-            <!-- Bảng hiển thị dữ liệu chính của màn hình. -->
-            <table class="table table-striped mb-0">
-                <thead><tr><th>Sách</th><th>Thể loại</th><th>Ngày mượn</th><th>Ngày trả</th><th>Ghi chú</th></tr></thead>
-                <tbody>
-                <tr th:each="borrow : ${returnedBorrows}">
-                    <td th:text="${borrow.book.title}"></td>
-                    <td th:text="${borrow.book.category.name}"></td>
-                    <td th:text="${borrow.borrowDate}"></td>
-                    <td th:text="${borrow.returnDate}"></td>
-                    <td th:text="${borrow.notes}"></td>
-                </tr>
-                <tr th:if="${#lists.isEmpty(returnedBorrows)}"><td class="text-center text-muted" colspan="5">Độc giả chưa có lịch sử trả sách.</td></tr>
+                <tr th:if="${#lists.isEmpty(borrowHistories)}"><td class="text-center text-muted" colspan="7">Thành viên chưa có lịch sử mượn.</td></tr>
                 </tbody>
             </table>
         </div>
